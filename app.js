@@ -1,14 +1,13 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const { json } = require("body-parser");
+const bodyParse = require("body-parser");
 const sgMail = require("@sendgrid/mail");
-const API_KEY =
-  "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";
+const API_KEY = "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";
 app.use(cors());
-app.use(json());
+app.use(bodyParse.json());
 
-app.get("/", (req, res) => {
+app.get("/", (req, res) => { 
   res.send("Hello World!");
 });
 
@@ -19,27 +18,35 @@ app.post("/sendEmail", async (req, res) => {
     console.log(req.body);
 
     const message = {
-      to: "manishjaiswal98765@gmail.com",
-      from: "manishkumar817835@gmail.com",
+      to: req.body.email,
+      // from: "manishkumar817835@gmail.com",
+      from:{
+        name:"Webscoop.in",
+        email : "manishkumar817835@gmail.com"
+      },
 
       subject: "Hello from send Grid",
       text: "Hello grom fnjwfb wfwe fhwei",
-      html: "<h1>Hello grom fnjwfb wfwe fhwei</h1>",
+      html: "<h1>Hello From Webscoop</h1>",
     };
-
+   
     sgMail
       .send(message)
       .then((response) => {
         console.log(response);
         console.log("message has been send");
+        
+        res.status(200).json({ response: "mail send " });
       })
       .catch((error) => {
-        console.log(error.message);
+        console.log(error);
+        res.status(200).json({ response: "data send" });
       });
 
-    res.status(200).json({ response: "data send" });
-  } catch {
-    console.log(err);
+  } catch(e) {
+    console.log(e)
+    res.status(200).json({ response: " request not sedn properly" });
+
   }
 });
 
