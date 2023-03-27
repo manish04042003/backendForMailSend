@@ -3,10 +3,12 @@ const app = express();
 const cors = require("cors");
 const bodyParse = require("body-parser");
 const sgMail = require("@sendgrid/mail");
-const API_KEY = "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";
+require('dotenv').config();
+const API_KEY = process.env.API_KEY ;
 app.use(cors());
 app.use(bodyParse.json());
 
+console.log(API_KEY)
 app.get("/", (req, res) => { 
   res.send("Hello World!");
 });
